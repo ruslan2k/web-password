@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import * as crypto from 'crypto-browserify';
+
+console.log(typeof crypto.publicEncrypt)
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
