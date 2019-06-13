@@ -10,6 +10,7 @@ const db = low(adapter)
 const passwordFile = process.env.passwordFile || path.join(__dirname, 'secret.password')
 const publicKeyFile = process.env.publicKeyFile || path.join(__dirname, 'publicKey.pem')
 const encPrivateKeyFile = process.env.encPrivateKeyFile || path.join(__dirname, 'privateKey.pem')
+const publicKeyJs = process.env.publicKeyJs || path.join(__dirname, 'client/src/publicKey.pem.js')
 var cSPassword
 var cSPublicKey
 var cSPrivateKey
@@ -32,6 +33,7 @@ if (fs.existsSync(passwordFile) && fs.existsSync(publicKeyFile) && fs.existsSync
   fs.writeFileSync(passwordFile, cSPassword.toString('hex'))
   fs.writeFileSync(publicKeyFile, cSPublicKey)
   fs.writeFileSync(encPrivateKeyFile, cSPrivateKey)
+  fs.writeFileSync(publicKeyJs, 'export const publicKey = `' + publicKey + '`;')
 }
 
 // Set some defaults (required if your JSON file is empty)
