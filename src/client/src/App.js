@@ -17,8 +17,7 @@ const MenuItem = ({ children }) => (
 function App() {
   return (
     <div>
-      <MenuItem>Home</MenuItem>{' '}
-      <MenuItem>Login</MenuItem>
+      <h1>App</h1>
     </div>
   );
 }

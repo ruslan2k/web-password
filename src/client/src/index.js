@@ -6,6 +6,7 @@ import Root from './Root';
 import * as serviceWorker from './serviceWorker';
 import * as crypto from 'crypto-browserify';
 import { publicKey } from './publicKey.pem.js';
+import 'semantic-ui-css/semantic.min.css';
 
 function todos(state = {}, action) {
   return state
