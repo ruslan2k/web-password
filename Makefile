@@ -1,11 +1,14 @@
-start: build node_modules
-	node src/server
+start: node_modules build
+	node .
 
 dev: node_modules
-	node src/server
+	node .
 
 node_modules:
 	yarn install
 
-build:
-	cd src/client && yarn run build
+build: client/node_modules
+	cd client && yarn build
+
+client/node_modules:
+	cd client && yarn install

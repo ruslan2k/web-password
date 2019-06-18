@@ -5,6 +5,8 @@ import App from './App';
 import SignUp from './SignUp';
 import { Menu } from 'semantic-ui-react';
 
+const Login = () => <h1>Login</h1>;
+
 class TopMenu extends React.Component {
   state = {}
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
@@ -33,6 +35,7 @@ const Root = ({ store }) => (
       <TopMenu />
       <Route exact path="/" component={App} />
       <Route path="/signup" component={SignUp} />
+      <Route path="/login" component={Login} />
     </Router>
   </Provider>
 )
