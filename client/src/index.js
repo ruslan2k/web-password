@@ -7,6 +7,7 @@ import Root from './Root';
 import * as serviceWorker from './serviceWorker';
 import * as crypto from 'crypto-browserify';
 import reducer from './reducers/index';
+import { SET_USER } from './actions/index';
 import { publicKey } from './publicKey.pem.js';
 import 'semantic-ui-css/semantic.min.css';
 
@@ -15,7 +16,7 @@ const store = createStore(
   applyMiddleware(logger)
 )
 store.dispatch({
-  type: 'SET_USER',
+  type: SET_USER,
   payload: {
     email: 'a@b.c',
     token: 'xxx'
