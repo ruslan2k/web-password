@@ -7,21 +7,14 @@ import Root from './Root';
 import * as serviceWorker from './serviceWorker';
 import * as crypto from 'crypto-browserify';
 import reducer from './reducers/index';
-import { SET_USER } from './actions/index';
+import apiMiddleware from './middleware/api';
 import { publicKey } from './publicKey.pem.js';
 import 'semantic-ui-css/semantic.min.css';
 
 const store = createStore(
   reducer,
-  applyMiddleware(logger)
+  applyMiddleware(logger, apiMiddleware)
 )
-store.dispatch({
-  type: SET_USER,
-  payload: {
-    email: 'a@b.c',
-    token: 'xxx'
-  }
-})
 
 let encrypted = crypto.publicEncrypt(publicKey, Buffer('abcdef'));
 encrypted.toString('hex');

@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { userRegister } from './actions/index';
 import { Link } from 'react-router-dom';
-import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
+import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
+// import { Image } from 'semantic-ui-react';
 
 class SignUpForm extends Component {
   constructor(props) {
@@ -11,15 +12,17 @@ class SignUpForm extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
   handleChange(event) {
-    console.log(event.target.value)
+    this.setState({ [event.target.name]: event.target.value });
   }
+
   handleSubmit(event) {
     event.preventDefault()
-    this.props.login('a@b.c', '12345')
+    this.props.login(this.state)
   }
+
   render() {
-    console.log(this.props)
     return (
       <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: 450 }}>
@@ -29,8 +32,9 @@ class SignUpForm extends Component {
           <Form size='large' action='/api/Users' method='POST' onSubmit={this.handleSubmit}>
             <Segment stacked>
               <Form.Input name='email' fluid icon='user' iconPosition='left' placeholder='E-mail address'
-                onChange={this.handleChange} />
-              <Form.Input name='password' fluid icon='lock' iconPosition='left' placeholder='Password' type='password' />
+                value={this.state.email} onChange={this.handleChange} />
+              <Form.Input name='password' fluid icon='lock' iconPosition='left' placeholder='Password' type='password'
+                value={this.state.password} onChange={this.handleChange} />
 
               <Button color='teal' fluid size='large'>Sign Up</Button>
             </Segment>
@@ -44,8 +48,12 @@ class SignUpForm extends Component {
   }
 }
 
+const mapStateToProps = ({ user }) => ({
+  user
+})
+
 const mapDispatchToProps = dispatch => ({
   login: (email, password) => dispatch(userRegister(email, password)),
 });
 
-export default connect(null, mapDispatchToProps)(SignUpForm);
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpForm);
