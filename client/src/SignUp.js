@@ -8,7 +8,7 @@ import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react'
 class SignUpForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { email: '', password: ''};
+    this.state = { email: '', password: '' };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -18,8 +18,9 @@ class SignUpForm extends Component {
   }
 
   handleSubmit(event) {
-    event.preventDefault()
-    this.props.login(this.state)
+    event.preventDefault();
+    const { email, password } = this.state;
+    this.props.login(email, password);
   }
 
   render() {
@@ -51,7 +52,7 @@ class SignUpForm extends Component {
 const mapStateToProps = state => ({ user: state.user })
 
 const mapDispatchToProps = dispatch => ({
-  login: (email, password) => dispatch(userRegister(email, password)),
+  login: (email, password) => dispatch(userRegister(email, password))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUpForm);

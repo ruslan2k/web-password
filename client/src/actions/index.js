@@ -10,7 +10,7 @@ export const userRegister = (email, password) => ({
     data: { email, password },
     onSuccess: setUser
   }
-})
+});
 
 export const setUser = user => ({
   type: SET_USER,
