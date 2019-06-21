@@ -48,9 +48,7 @@ class SignUpForm extends Component {
   }
 }
 
-const mapStateToProps = ({ user }) => ({
-  user
-})
+const mapStateToProps = state => ({ user: state.user })
 
 const mapDispatchToProps = dispatch => ({
   login: (email, password) => dispatch(userRegister(email, password)),

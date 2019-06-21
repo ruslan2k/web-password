@@ -7,7 +7,7 @@ export const userRegister = (email, password) => ({
   payload: {
     url: '/users',
     method: 'POST',
-    data: { user: { email, password } },
+    data: { email, password },
     onSuccess: setUser
   }
 })
