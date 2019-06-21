@@ -1,17 +1,26 @@
 import React from 'react';
-import { createStore } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
+import logger from 'redux-logger';
 import ReactDOM from 'react-dom';
 import './index.css';
 import Root from './Root';
 import * as serviceWorker from './serviceWorker';
 import * as crypto from 'crypto-browserify';
+import reducer from './reducers/index';
 import { publicKey } from './publicKey.pem.js';
 import 'semantic-ui-css/semantic.min.css';
 
-function todos(state = {}, action) {
-  return state
-}
-const store = createStore(todos, {});
+const store = createStore(
+  reducer,
+  applyMiddleware(logger)
+)
+store.dispatch({
+  type: 'SET_USER',
+  payload: {
+    email: 'a@b.c',
+    token: 'xxx'
+  }
+})
 
 let encrypted = crypto.publicEncrypt(publicKey, Buffer('abcdef'));
 encrypted.toString('hex');
