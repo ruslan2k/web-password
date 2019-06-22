@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const API = 'API'
 
-axios.defaults.baseURL = '/api'
+axios.defaults.baseURL = process.env.REACT_APP_API_URL || '/api'
 
 export default ({ dispatch }) => next => action => {
   next(action)
