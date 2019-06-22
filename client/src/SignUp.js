@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
 import { userRegister } from './actions/index';
 import { Link } from 'react-router-dom';
 import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
@@ -24,6 +25,9 @@ class SignUpForm extends Component {
   }
 
   render() {
+    if (this.props.user && this.props.user.loggedIn) {
+      return <Redirect to='/' />
+    }
     return (
       <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: 450 }}>

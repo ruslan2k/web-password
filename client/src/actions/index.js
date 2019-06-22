@@ -14,5 +14,5 @@ export const userRegister = (email, password) => ({
 
 export const setUser = user => ({
   type: SET_USER,
-  payload: user
+  payload: { ...user, loggedIn: true }
 })
