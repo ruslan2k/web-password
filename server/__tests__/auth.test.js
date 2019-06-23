@@ -32,7 +32,7 @@ describe('Auth', function () {
   let token
   test('register user', async function () {
     const response = await request(server)
-      .post('/user/')
+      .post('/api/user/')
       .send(user1)
     expect(response.status).toEqual(200)
     const user = response.body
@@ -44,28 +44,28 @@ describe('Auth', function () {
 
   test('Wrong params', async function () {
     const response = await request(server)
-      .get('/auth/')
+      .get('/api/auth/')
       .query({ a: 'A', b: 'B' })
     expect(response.status).toEqual(400)
   })
 
   test('Wrong username', async function () {
     const response = await request(server)
-      .get('/auth/')
+      .get('/api/auth/')
       .query({ username: 'BadUserName', password: user1.password })
     expect(response.status).toEqual(404)
   })
 
   test('Wrong password', async function () {
     const response = await request(server)
-      .get('/auth/')
+      .get('/api/auth/')
       .query({ username: user1.username, password: 'password' })
     expect(response.status).toEqual(401)
   })
 
   test('GET /auth/ success', async function () {
     const response = await request(server)
-      .get('/auth/')
+      .get('/api/auth/')
       .query({ username: user1.username, password: user1.password })
     expect(response.status).toEqual(200)
     expect(response.body).toHaveProperty('token')

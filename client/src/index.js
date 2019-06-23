@@ -1,6 +1,7 @@
 import React from 'react';
 import { applyMiddleware, createStore } from 'redux';
 import logger from 'redux-logger';
+import thunk from 'redux-thunk';
 import ReactDOM from 'react-dom';
 import './index.css';
 import Root from './Root';
@@ -13,7 +14,7 @@ import 'semantic-ui-css/semantic.min.css';
 
 const store = createStore(
   reducer,
-  applyMiddleware(logger, apiMiddleware)
+  applyMiddleware(logger, thunk, apiMiddleware)
 )
 
 let encrypted = crypto.publicEncrypt(publicKey, Buffer('abcdef'));

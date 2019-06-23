@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
-import { userRegister } from './actions/index';
+import { userLogin } from './actions/index';
 import { Link } from 'react-router-dom';
 import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
-// import { Image } from 'semantic-ui-react';
 
-class SignUpForm extends Component {
+class LoginForm extends Component {
   constructor(props) {
     super(props);
     this.state = { email: '', password: '' };
@@ -21,7 +20,7 @@ class SignUpForm extends Component {
   handleSubmit(event) {
     event.preventDefault();
     const { email, password } = this.state;
-    this.props.register(email, password);
+    this.props.login(email, password);
   }
 
   render() {
@@ -31,9 +30,7 @@ class SignUpForm extends Component {
     return (
       <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: 450 }}>
-          <Header as='h2' color='teal' textAlign='center'>
-            {/*<Image src='/logo.png' />*/} Sign Up
-          </Header>
+          <Header as='h2' color='teal' textAlign='center'>Login</Header>
           <Form size='large' action='/api/Users' method='POST' onSubmit={this.handleSubmit}>
             <Segment stacked>
               <Form.Input name='email' fluid icon='user' iconPosition='left' placeholder='E-mail address'
@@ -41,11 +38,11 @@ class SignUpForm extends Component {
               <Form.Input name='password' fluid icon='lock' iconPosition='left' placeholder='Password' type='password'
                 value={this.state.password} onChange={this.handleChange} />
 
-              <Button color='teal' fluid size='large'>Sign Up</Button>
+              <Button color='teal' fluid size='large'>Login</Button>
             </Segment>
           </Form>
           <Message>
-            Already registered? <Link to='/login'>Click here to login</Link>
+            New user? <Link to='/signup'>Click here to signup</Link>
           </Message>
         </Grid.Column>
       </Grid>
@@ -56,7 +53,7 @@ class SignUpForm extends Component {
 const mapStateToProps = state => ({ user: state.user });
 
 const mapDispatchToProps = dispatch => ({
-  register: (email, password) => dispatch(userRegister(email, password))
+  login: (email, password) => dispatch(userLogin(email, password))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpForm);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);

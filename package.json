@@ -4,6 +4,7 @@
   "description": "web-password",
   "main": "server/index.js",
   "scripts": {
+    "dev": "nodemon --ignore client --ignore node_modules server/index.js",
     "lint": "eslint .",
     "prestart": "cd client && yarn install && yarn build",
     "start": "node .",
@@ -35,6 +36,7 @@
   "devDependencies": {
     "eslint": "^5.16.0",
     "eslint-config-loopback": "^13.1.0",
+    "nodemon": "^1.19.1",
     "supertest": "^4.0.2"
   },
   "repository": {

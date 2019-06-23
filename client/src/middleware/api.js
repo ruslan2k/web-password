@@ -10,9 +10,13 @@ export default ({ dispatch }) => next => action => {
     return
   }
 
-  const { method, url, data, onSuccess, } = action.payload;
+  const { method, url, data, onSuccess, onFailure } = action.payload;
 
   axios({ method, url, data })
     .then(({ data }) => dispatch(onSuccess(data)))
-    .catch(err => console.error('err', err));
+    .catch(err => {
+      if (onFailure) {
+        dispatch(onFailure(err));
+      }
+    });
 }

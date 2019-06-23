@@ -1,38 +1,17 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { HashRouter as Router, Route, Link } from 'react-router-dom';
+import { HashRouter as Router, Route } from 'react-router-dom';
 import App from './App';
+import TopMenu from './TopMenu';
 import SignUp from './SignUp';
-import { Menu } from 'semantic-ui-react';
-
-const Login = () => <h1>Login</h1>;
-
-class TopMenu extends React.Component {
-  state = {}
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
-
-  render() {
-    const { activeItem } = this.state
-    return (
-      <Menu>
-        <Menu.Item name='login' as={Link} to="/" active={activeItem === 'login'} onClick={this.handleItemClick}>
-          Home
-        </Menu.Item>
-        <Menu.Item name='login' as={Link} to="/login" active={activeItem === 'login'} onClick={this.handleItemClick}>
-          Login
-        </Menu.Item>
-        <Menu.Item name='signup' as={Link} to="/signup"  active={activeItem === 'signup'} onClick={this.handleItemClick}>
-          Sign Up
-        </Menu.Item>
-      </Menu>
-    )
-  }
-}
+import Errors from './Errors';
+import Login from './Login';
 
 const Root = ({ store }) => (
   <Provider store={store}>
     <Router>
       <TopMenu />
+      <Errors />
       <Route exact path="/" component={App} />
       <Route path="/signup" component={SignUp} />
       <Route path="/login" component={Login} />
