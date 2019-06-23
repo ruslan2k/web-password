@@ -14,7 +14,7 @@ import 'semantic-ui-css/semantic.min.css';
 
 const store = createStore(
   reducer,
-  applyMiddleware(logger, thunk, apiMiddleware)
+  applyMiddleware(thunk, logger, apiMiddleware)
 )
 
 let encrypted = crypto.publicEncrypt(publicKey, Buffer('abcdef'));
