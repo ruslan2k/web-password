@@ -6,16 +6,13 @@ const auth = require('../auth')
 const { sendMessage } = require('../../services/mail')
 
 const createUserSchema = Joi.object({
-  sponsor: Joi.string().required(),
-  username: Joi.string().required(),
   email: Joi.string().email().required(),
-  firstName: Joi.string().required(),
-  secondName: Joi.string().required(),
-  phone: Joi.number().required(),
-  country: Joi.string().min(2).max(2).required(),
   password: Joi.string().required(),
-  finPassword: Joi.string().required(),
-  skype: Joi.string(),
+})
+
+const loginUserSchema = Joi.object({
+  email: Joi.string().required(),
+  password: Joi.string().required()
 })
 
 const findUserSchema = Joi.object({
@@ -33,8 +30,24 @@ const resetPasswordSchema = Joi.object({
   token: Joi.string()
 })
 
-/**
- * Create new User
+/** User Login
+ */
+router.post('/login', celebrate({ body: loginUserSchema }), async (req, res, next) => {
+  try {
+    const user = await User.findOne({ email: req.body.email })
+    if (!user) {
+      return res.status(404).json({ errors: { 'User': 'not found' } })
+    }
+    if (!user.validPassword(req.body.password)) {
+      return res.status(401).json({ errors: { 'Password': 'refusal of authorization' } })
+    }
+    return res.json({ token: user.generateJWT() })
+  } catch (err) {
+    next(err)
+  }
+})
+
+/** Create new User
  */
 router.post('/', celebrate({ body: createUserSchema }), async (req, res, next) => {
   try {
@@ -74,7 +87,6 @@ router.post('/resetPassword/', celebrate({ body: resetPasswordSchema }), async (
         console.error(err)
         res.status(500).json({ errors: { 'Server': 'Email service error' } })
       })
-    // res.json({ message: 'Email sent', email: user.email })
   } catch (err) {
     next(err)
   }

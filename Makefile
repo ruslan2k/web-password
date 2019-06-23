@@ -2,7 +2,7 @@ start: node_modules build
 	node .
 
 dev: node_modules
-	node .
+	yarn run dev
 
 node_modules:
 	yarn install

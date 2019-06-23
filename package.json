@@ -34,7 +34,8 @@
   },
   "devDependencies": {
     "eslint": "^5.16.0",
-    "eslint-config-loopback": "^13.1.0"
+    "eslint-config-loopback": "^13.1.0",
+    "supertest": "^4.0.2"
   },
   "repository": {
     "type": "",
