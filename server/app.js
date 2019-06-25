@@ -8,6 +8,7 @@ const dotenv = require('dotenv')
 dotenv.config()
 const User = require('./models/User')
 const isProduction = process.env.NODE_ENV === 'production'
+require('../common/password')
 
 const app = express()
 app.use(cors())

@@ -10,7 +10,7 @@ const db = low(adapter)
 const passwordFile = process.env.passwordFile || path.join(__dirname, 'secret.password')
 const publicKeyFile = process.env.publicKeyFile || path.join(__dirname, 'publicKey.pem')
 const encPrivateKeyFile = process.env.encPrivateKeyFile || path.join(__dirname, 'privateKey.pem')
-const publicKeyJs = process.env.publicKeyJs || path.join(__dirname, 'client/src/publicKey.pem.js')
+const publicKeyJs = process.env.publicKeyJs || path.join(__dirname, '../client/src/publicKey.pem.js')
 var cSPassword
 var cSPublicKey
 var cSPrivateKey
@@ -86,7 +86,8 @@ function addGroup (password) {
 
 }
 
-function test () {
+function test (str) {
+  console.log(str)
   const profileId = createUserProfile(1, 'p@$$W0rD')
   const profile = db.get('profiles').find({ id: profileId }).value()
   console.log(profile)
@@ -94,5 +95,6 @@ function test () {
 
 module.exports = {
   addGroup,
-  createGroup
+  createGroup,
+  test
 }
