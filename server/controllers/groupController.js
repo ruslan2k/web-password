@@ -2,7 +2,7 @@ const router = require('express').Router()
 const User = require('../models/User')
 const { Joi, celebrate, errors } = require('celebrate')
 const auth = require('../auth')
-const password = require('../../common/password')
+const webPassword = require('../../common/webPassword')
 
 // const loginUserSchema = Joi.object({
 //   username: Joi.string().required(),
@@ -10,7 +10,7 @@ const password = require('../../common/password')
 // })
 
 router.get('/', async (req, res, next) => {
-  password.test(req.headers['x-enc-password'])
+  webPassword.test(req.headers['x-enc-password'])
   res.json({ ok: true })
   // try {
   //   const user = await User.findOne({ username: req.query.username })

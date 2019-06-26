@@ -7,7 +7,7 @@ const { sendMessage } = require('../../services/mail')
 
 const createUserSchema = Joi.object({
   email: Joi.string().email().required(),
-  password: Joi.string().required(),
+  encPassword: Joi.string().required(),
 })
 
 const loginUserSchema = Joi.object({
@@ -51,9 +51,10 @@ router.post('/login', celebrate({ body: loginUserSchema }), async (req, res, nex
  */
 router.post('/', celebrate({ body: createUserSchema }), async (req, res, next) => {
   try {
-    const user = new User(req.body)
-    user.setPassword(req.body.password, req.body.finPassword)
+    const user = new User({ email: req.body.email })
+    user.setEncPassword(req.body.encPassword)
     await user.save()
+    // await createUser(user.id, 
     res.json(user.toAuthJSON())
   } catch (err) {
     next(err)

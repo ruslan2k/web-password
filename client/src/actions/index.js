@@ -9,14 +9,20 @@ export const SET_ERROR = 'SET_ERROR';
 export const REMOVE_ERROR = 'REMOVE_ERROR';
 export const CONFIRM_LOGIN = 'REMOVE_ERROR';
 
+const encryptPassword = password => {
+  const encrypted = crypto.publicEncrypt(publicKey, Buffer(password));
+  return encrypted.toString('base64');
+}
+
 export const userRegister = (email, password) => dispatch => {
-  dispatch(userRequest(email, password));
+  const encPassword = encryptPassword(password);
+  dispatch(userRequest(email, encPassword));
   dispatch({
     type: API,
     payload: {
       url: '/users',
       method: 'POST',
-      data: { email, password },
+      data: { email, encPassword },
       onSuccess: userSuccess,
       onFailure: userFailure,
     }
@@ -24,22 +30,21 @@ export const userRegister = (email, password) => dispatch => {
 };
 
 export const userLogin = (email, password) => dispatch => {
-  dispatch(userRequest(email, password));
+  const encPassword = encryptPassword(password);
+  dispatch(userRequest(email, encPassword));
   dispatch({
     type: API,
     payload: {
       url: '/users/login',
       method: 'POST',
-      data: { email, password },
+      data: { email, encPassword },
       onSuccess: userSuccess,
       onFailure: userFailure,
     }
   });
 };
 
-export const userRequest = (email, password) => {
-  const encrypted = crypto.publicEncrypt(publicKey, Buffer(password));
-  const encPassword = encrypted.toString('hex');
+export const userRequest = (email, encPassword) => {
   return {
     type: USER_REQUEST,
     payload: {

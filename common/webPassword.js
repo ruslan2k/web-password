@@ -79,6 +79,12 @@ function createUserProfile (userId, password) {
   return profileId
 }
 
+function decryptPassword (encPassword) {
+  return crypto.privateDecrypt({
+    key: cSPrivateKey,
+    passphrase: cSPassword
+  }, Buffer.from(encPassword, 'base64'))
+}
 // function createPasswordForPrivateKey (password
 // Set a user using Lodash shorthand syntax
 
@@ -90,11 +96,12 @@ function test (str) {
   console.log(str)
   const profileId = createUserProfile(1, 'p@$$W0rD')
   const profile = db.get('profiles').find({ id: profileId }).value()
-  console.log(profile)
+  // console.log(profile)
 }
 
 module.exports = {
   addGroup,
   createGroup,
-  test
+  test,
+  decryptPassword,
 }

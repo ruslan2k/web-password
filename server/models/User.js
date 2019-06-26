@@ -3,6 +3,7 @@ const uniqueValidator = require('mongoose-unique-validator')
 const crypto = require('crypto')
 const jwt = require('jsonwebtoken')
 const secret = require('../config').secret
+const webPassword = require('../../common/webPassword')
 
 var UserSchema = new mongoose.Schema({
   email: { type: String, lowercase: true, unique: true, required: [true, "can't be blank"], match: [/\S+@\S+\.\S+/, 'is invalid'], index: true },
@@ -19,6 +20,12 @@ UserSchema.methods.validPassword = function (password) {
 
 UserSchema.methods.setPassword = function (password) {
   this.salt = crypto.randomBytes(16).toString('hex')
+  this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex')
+}
+
+UserSchema.methods.setEncPassword = function (encPassword) {
+  this.salt = crypto.randomBytes(16).toString('hex')
+  const password = webPassword.decryptPassword(encPassword).toString()
   this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex')
 }
 
