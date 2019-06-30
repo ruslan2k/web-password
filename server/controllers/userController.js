@@ -4,10 +4,11 @@ const User = require('../models/User')
 const { Joi, celebrate, errors } = require('celebrate')
 const auth = require('../auth')
 const { sendMessage } = require('../../services/mail')
+const webPassword = require('../../common/webPassword')
 
 const createUserSchema = Joi.object({
   email: Joi.string().email().required(),
-  encPassword: Joi.string().required(),
+  encPassword: Joi.string().required()
 })
 
 const loginUserSchema = Joi.object({
@@ -21,7 +22,7 @@ const findUserSchema = Joi.object({
   username: Joi.string(),
   email: Joi.string(),
   phoneNumber: Joi.string(),
-  inStructureUser: Joi.string(),
+  inStructureUser: Joi.string()
 })
 
 const resetPasswordSchema = Joi.object({
@@ -54,14 +55,14 @@ router.post('/', celebrate({ body: createUserSchema }), async (req, res, next) =
     const user = new User({ email: req.body.email })
     user.setEncPassword(req.body.encPassword)
     await user.save()
-    // await createUser(user.id, 
+    webPassword.createProfile(user.id, req.body.encPassword)
     res.json(user.toAuthJSON())
   } catch (err) {
     next(err)
   }
 })
 
-router.get('/', [auth.required('query'), celebrate({ query: findUserSchema })], async (req, res) => {
+router.get('/', [auth.required('query'), celebrate({ query: findUserSchema })], async (req, res, next) => {
   try {
     const users = await User.find()
     res.json(users)
@@ -82,7 +83,7 @@ router.post('/resetPassword/', celebrate({ body: resetPasswordSchema }), async (
     if (!user) {
       return res.status(404).json({ errors: { 'User': 'not found' } })
     }
-    sendMessage(user.email, url.format({ protocol: req.protocol, host:req.get('host'), pathname: '/resetPassword' }))
+    sendMessage(user.email, url.format({ protocol: req.protocol, host: req.get('host'), pathname: '/resetPassword' }))
       .then(() => res.json({ message: 'Email sent', email: user.email }))
       .catch(err => {
         console.error(err)

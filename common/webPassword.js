@@ -37,7 +37,7 @@ if (fs.existsSync(passwordFile) && fs.existsSync(publicKeyFile) && fs.existsSync
 }
 
 // Set some defaults (required if your JSON file is empty)
-db.defaults({ groups: [], profiles: [], user: {} })
+db.defaults({ groups: [], profiles: [] })
   .write()
 
 function createGroup (userId, name) {
@@ -50,30 +50,26 @@ function createGroup (userId, name) {
   console.log('profile', profile)
 }
 
-function createUserProfile (userId, password) {
-  const salt = crypto.randomBytes(32).toString('HEX')
+function createProfile (userId, encPassword) {
+  const password = decryptPassword(encPassword)
+  const salt = crypto.randomBytes(32).toString('hex')
   const key = crypto.pbkdf2Sync(password, salt, 1000, 32, 'sha512')
   const profileId = uuidv4()
   const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
     modulusLength: 4096,
-    publicKeyEncoding: {
-      type: 'spki',
-      format: 'pem'
-    },
-    privateKeyEncoding: {
-      type: 'pkcs8',
-      format: 'pem',
-      cipher: 'aes-256-cbc',
-      passphrase: key.toString('hex')
-    }
+    publicKeyEncoding: { type: 'spki', format: 'pem' },
+    privateKeyEncoding: {  type: 'pkcs8', format: 'pem', cipher: 'aes-256-cbc', passphrase: key.toString('hex') }
   })
+  const groupId = createGroup('Personal', publicKey)
   db.get('profiles')
     .push({
       id: profileId,
       userId: userId,
       salt: salt,
-      publicKey: publicKey,
-      encryptedPrivateKey: privateKey
+      groups: [{
+        id: groupId,
+        encPrivateKey: privateKey
+      }]
     })
     .write()
   return profileId
@@ -88,20 +84,28 @@ function decryptPassword (encPassword) {
 // function createPasswordForPrivateKey (password
 // Set a user using Lodash shorthand syntax
 
-function addGroup (password) {
-
+function createGroup (name, publicKey) {
+  const id = uuidv4()
+  db.get('groups')
+    .push({
+      id,
+      name,
+      publicKey
+    })
+    .write()
+  return id
 }
 
 function test (str) {
   console.log(str)
-  const profileId = createUserProfile(1, 'p@$$W0rD')
-  const profile = db.get('profiles').find({ id: profileId }).value()
+  // const profileId = createUserProfile(1, 'p@$$W0rD')
+  // const profile = db.get('profiles').find({ id: profileId }).value()
   // console.log(profile)
 }
 
 module.exports = {
-  addGroup,
+  createProfile,
   createGroup,
   test,
-  decryptPassword,
+  decryptPassword
 }
