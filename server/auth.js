@@ -1,31 +1,27 @@
-const jwt = require('express-jwt')
-const secret = require('./config').secret
+var jwt = require('express-jwt');
+var secret = require('../config').secret;
 
-function getTokenFromQuery (req) {
-  if (req.query.token) {
-    return req.query.token
+function getTokenFromHeader(req){
+  if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Token' ||
+      req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+    return req.headers.authorization.split(' ')[1];
   }
-  return null
+
+  return null;
 }
 
-function required (reqParam) {
-  let getToken
-  if (reqParam === 'query') {
-    return jwt({
-      secret: secret,
-      userProperty: 'payload',
-      getToken: getTokenFromQuery
-    })
-  }
-  return function (req, res, next) {
-    let err = new Error(`Cant find token in ${reqParam}`)
-    err.status = 400
-    next(err)
-  }
-}
+var auth = {
+  required: jwt({
+    secret: secret,
+    userProperty: 'payload',
+    getToken: getTokenFromHeader
+  }),
+  optional: jwt({
+    secret: secret,
+    userProperty: 'payload',
+    credentialsRequired: false,
+    getToken: getTokenFromHeader
+  })
+};
 
-const auth = {
-  required
-}
-
-module.exports = auth
+module.exports = auth;
