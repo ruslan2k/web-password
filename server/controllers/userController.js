@@ -13,7 +13,7 @@ const createUserSchema = Joi.object({
 
 const loginUserSchema = Joi.object({
   email: Joi.string().required(),
-  password: Joi.string().required()
+  encPassword: Joi.string().required()
 })
 
 const findUserSchema = Joi.object({
@@ -39,7 +39,7 @@ router.post('/login', celebrate({ body: loginUserSchema }), async (req, res, nex
     if (!user) {
       return res.status(404).json({ errors: { 'User': 'not found' } })
     }
-    if (!user.validPassword(req.body.password)) {
+    if (!user.validEncPassword(req.body.encPassword)) {
       return res.status(401).json({ errors: { 'Password': 'refusal of authorization' } })
     }
     return res.json({ token: user.generateJWT() })
@@ -62,7 +62,7 @@ router.post('/', celebrate({ body: createUserSchema }), async (req, res, next) =
   }
 })
 
-router.get('/', [auth.required('query'), celebrate({ query: findUserSchema })], async (req, res, next) => {
+router.get('/', [auth.required, celebrate({ query: findUserSchema })], async (req, res, next) => {
   try {
     const users = await User.find()
     res.json(users)

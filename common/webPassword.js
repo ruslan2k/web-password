@@ -96,6 +96,13 @@ function createGroup (name, publicKey) {
   return id
 }
 
+function getGroups (userId) {
+  const profile = db.get('profiles')
+    .find({ userId })
+    .value()
+  return profile.groups.map(group => db.get('groups').find({ id: group.id }).value())
+}
+
 function test (str) {
   console.log(str)
   // const profileId = createUserProfile(1, 'p@$$W0rD')
@@ -106,6 +113,7 @@ function test (str) {
 module.exports = {
   createProfile,
   createGroup,
+  getGroups,
   test,
   decryptPassword
 }

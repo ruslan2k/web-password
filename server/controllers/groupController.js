@@ -9,21 +9,10 @@ const webPassword = require('../../common/webPassword')
 //   password: Joi.string().required()
 // })
 
-router.get('/', async (req, res, next) => {
-  webPassword.test(req.headers['x-enc-password'])
-  res.json({ ok: true })
-  // try {
-  //   const user = await User.findOne({ username: req.query.username })
-  //   if (!user) {
-  //     return res.status(404).json({ errors: { 'User': 'not found' } })
-  //   }
-  //   if (!user.validPassword(req.query.password)) {
-  //     return res.status(401).json({ errors: { 'Password': 'refusal of authorization' } })
-  //   }
-  //   return res.json({ token: user.generateJWT() })
-  // } catch (err) {
-  //   next(err)
-  // }
+router.get('/', auth.required, async (req, res, next) => {
+  // console.log('req.payload', req.payload)
+  // webPassword.test(req.headers['x-enc-password'])
+  res.json(webPassword.getGroups(req.payload.id))
 })
 
 router.use(errors())
