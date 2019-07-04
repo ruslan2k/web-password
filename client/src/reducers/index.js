@@ -5,7 +5,9 @@ import {
   USER_REQUEST,
   USER_SUCCESS,
   USER_FAILURE,
-} from '../actions/index';
+  GROUPS_SUCCESS,
+  GROUPS_FAILURE,
+} from '../actions';
 
 function error (state = {}, action) {
   switch (action.type) {
@@ -30,7 +32,19 @@ function user (state = {}, action) {
   }
 }
 
+function groups (state = [], action) {
+  switch (action.type) {
+    case GROUPS_SUCCESS:
+      return action.payload;
+    case GROUPS_FAILURE:
+      return [];
+    default:
+      return state;
+  }
+}
+
 export default combineReducers({
   error,
+  groups,
   user,
 });

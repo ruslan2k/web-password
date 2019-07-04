@@ -1,23 +1,32 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
+import { Button } from 'semantic-ui-react';
 import { fetchGroups } from './actions';
 
-function Home (props) {
-  const isLoggedIn = props.user.isLoggedIn;
-  if (isLoggedIn) {
-    props.fetchGroups();
+class Home extends Component {
+  componentDidMount() {
+    const isLoggedIn = this.props.user.isLoggedIn;
+    if (isLoggedIn) {
+      this.props.fetchGroups();
+    }
   }
-  return (isLoggedIn) ? (
-    <div>
-      <h1>Home</h1>
-    </div>
-  ) : (
-    <Redirect to='/login' />
-  );
+  render() {
+    const isLoggedIn = this.props.user.isLoggedIn;
+    if (!isLoggedIn) {
+      return <Redirect to='/login' />;
+    }
+    const groups = this.props.groups.map(group => <Button key={group.id}>{group.name}</Button>);
+    return (
+      <div>
+        <h1>Groups</h1>
+        {groups}
+      </div>
+    );
+  }
 }
 
-const mapStateToProps = state => ({ user: state.user });
+const mapStateToProps = state => ({ user: state.user, groups: state.groups });
 const mapDispatchToProps = dispatch => ({
   fetchGroups: () => dispatch(fetchGroups()),
 });

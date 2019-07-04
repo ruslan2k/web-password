@@ -8,7 +8,7 @@ const style = {
 
 const Errors = props => {
   const error = props.error;
-  const isError = (Object.keys(error).length !== 0 && error.constructor === Object);
+  // const isError = (Object.keys(error).length !== 0 && error.constructor === Object);
   return <div style={style}>{JSON.stringify(error)}</div>
 }
 

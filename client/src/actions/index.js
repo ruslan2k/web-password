@@ -5,6 +5,8 @@ import * as crypto from 'crypto-browserify';
 export const USER_REQUEST = 'USER_REQUEST';
 export const USER_SUCCESS = 'USER_SUCCESS';
 export const USER_FAILURE = 'USER_FAILURE';
+export const GROUPS_SUCCESS = 'GROUPS_SUCCESS';
+export const GROUPS_FAILURE = 'GROUPS_FAILURE';
 export const SET_ERROR = 'SET_ERROR';
 export const REMOVE_ERROR = 'REMOVE_ERROR';
 export const CONFIRM_LOGIN = 'REMOVE_ERROR';
@@ -13,6 +15,19 @@ const encryptPassword = password => {
   const encrypted = crypto.publicEncrypt(publicKey, Buffer(password));
   return encrypted.toString('base64');
 }
+
+export const fetchGroups = () => ({
+  type: API,
+  payload: {
+    url: '/groups',
+    method: 'GET',
+    onSuccess: groupsSuccess
+  },
+});
+export const groupsSuccess = groups => ({
+  type: GROUPS_SUCCESS,
+  payload: groups
+});
 
 export const userRegister = (email, password) => dispatch => {
   const encPassword = encryptPassword(password);
@@ -64,13 +79,6 @@ export const userFailure = error => dispatch => {
     type: USER_FAILURE,
   };
 }
-export const fetchGroups = () => ({
-  type: API,
-  payload: {
-    url: '/groups',
-    method: 'GET',
-  },
-});
 
 export const setError = error => dispatch => {
   setTimeout(() => dispatch({
