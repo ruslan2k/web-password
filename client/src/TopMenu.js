@@ -13,9 +13,8 @@ class TopMenu extends Component {
     if (this.props.user && this.props.user.isLoggedIn) {
       return (
         <Menu>
-          <Menu.Item name='home' as={Link} to="/" active={activeItem === 'home'} onClick={this.handleItemClick}>
-            Home
-          </Menu.Item>
+          <Menu.Item name='groups' as={Link} to="/groups" active={activeItem === 'groups'}
+            onClick={this.handleItemClick}>Groups</Menu.Item>
         </Menu>
       );
     }
@@ -23,6 +22,8 @@ class TopMenu extends Component {
       <Menu>
         <Menu.Item name='login' as={Link} to="/login" active={activeItem === 'login'} onClick={this.handleItemClick}>{'Login'}</Menu.Item>
         <Menu.Item name='signup' as={Link} to="/signup"  active={activeItem === 'signup'} onClick={this.handleItemClick}>{'Sign Up'}</Menu.Item>
+        <Menu.Item name='groups' as={Link} to="/groups" active={activeItem === 'groups'}
+          onClick={this.handleItemClick}>Groups</Menu.Item>
       </Menu>
     );
   }

@@ -6,6 +6,7 @@ import TopMenu from './TopMenu';
 import SignUp from './SignUp';
 import Errors from './Errors';
 import Login from './Login';
+import Groups from './containers/Groups';
 
 const Root = ({ store }) => (
   <Provider store={store}>
@@ -13,6 +14,7 @@ const Root = ({ store }) => (
       <TopMenu />
       <Errors />
       <Route exact path="/" component={Home} />
+      <Route path="/groups" component={Groups} />
       <Route path="/signup" component={SignUp} />
       <Route path="/login" component={Login} />
     </Router>
