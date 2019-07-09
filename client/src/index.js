@@ -1,5 +1,6 @@
 import React from 'react';
-import { applyMiddleware, createStore } from 'redux';
+import { compose, applyMiddleware, createStore } from 'redux';
+import persistState from 'redux-localstorage';
 import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 import ReactDOM from 'react-dom';
@@ -12,7 +13,10 @@ import 'semantic-ui-css/semantic.min.css';
 
 const store = createStore(
   reducer,
-  applyMiddleware(thunk, logger, apiMiddleware)
+  compose(
+    applyMiddleware(thunk, logger, apiMiddleware),
+    persistState()
+  )
 )
 
 ReactDOM.render(<Root store={store} />, document.getElementById('root'));
