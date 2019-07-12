@@ -3,12 +3,21 @@ import { Route, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import { Button, List } from 'semantic-ui-react';
-import { fetchGroups } from '../actions';
+import { userFetch } from '../actions';
 
-const GroupList = () => <h2>{'Group List'}</h2>;
-const GroupInfo = props => <h2>{'Group Info'}</h2>;
+class Logout extends Component {
+  render() {
+    // this.props.userFetch()
+    return (
+      <div>
+        <h1>Logout</h1>
+        <Button onClick={() => this.props.userFetch()}>Logout</Button>
+      </div>
+    )
+  }
+}
 
-class Groups extends Component {
+class xxxx extends Component {
   componentDidMount() {
     const isLoggedIn = this.props.user.isLoggedIn;
     if (isLoggedIn) {
@@ -22,8 +31,10 @@ class Groups extends Component {
     return (
       <div>
         <h1>Groups</h1>
+      {/*
         <Route exact path="/groups" component={GroupList} />
         <Route path="/groups/:id" component={GroupInfo} />
+        */}
         <List link>
           {groups}
         </List>
@@ -34,7 +45,8 @@ class Groups extends Component {
 
 const mapStateToProps = state => ({ user: state.user, groups: state.groups });
 const mapDispatchToProps = dispatch => ({
-  fetchGroups: () => dispatch(fetchGroups()),
+  userFetch: () => dispatch(userFetch()),
+  // fetchGroups: () => dispatch(fetchGroups()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Groups);
+export default connect(null, mapDispatchToProps)(Logout);

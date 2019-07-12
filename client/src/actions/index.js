@@ -21,7 +21,8 @@ export const fetchGroups = () => ({
   payload: {
     url: '/groups',
     method: 'GET',
-    onSuccess: groupsSuccess
+    onSuccess: groupsSuccess,
+    onFailure: userFailure,
   },
 });
 export const groupsSuccess = groups => ({
@@ -59,20 +60,33 @@ export const userLogin = (email, password) => dispatch => {
   });
 };
 
+export const userFetch = () => dispatch => ({
+  type: USER_REQUEST,
+  payload: {
+    url: '/users/me',
+    method: 'GET',
+    onSuccess: userSuccess,
+    onFailure: userFailure,
+  }
+})
+
 export const userRequest = (email, encPassword) => {
   return {
     type: USER_REQUEST,
     payload: {
       email,
       encPassword,
-      isLoggedIn: false
+      isLoggedIn: false,
+      isFetching: true
     }
   }
 };
+
 export const userSuccess = user => ({
   type: USER_SUCCESS,
   payload: { ...user, isLoggedIn: true }
 });
+
 export const userFailure = error => dispatch => {
   dispatch(setError(error))
   return {

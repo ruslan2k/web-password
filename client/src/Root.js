@@ -7,6 +7,7 @@ import SignUp from './SignUp';
 import Errors from './Errors';
 import Login from './Login';
 import Groups from './containers/Groups';
+import Logout from './containers/Logout';
 
 const Root = ({ store }) => (
   <Provider store={store}>
@@ -17,6 +18,7 @@ const Root = ({ store }) => (
       <Route path="/groups" component={Groups} />
       <Route path="/signup" component={SignUp} />
       <Route path="/login" component={Login} />
+      <Route path="/logout" component={Logout} />
     </Router>
   </Provider>
 )

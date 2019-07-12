@@ -62,12 +62,24 @@ router.post('/', celebrate({ body: createUserSchema }), async (req, res, next) =
   }
 })
 
-router.get('/', [auth.required, celebrate({ query: findUserSchema })], async (req, res, next) => {
+// disabled // router.get('/', [auth.required, celebrate({ query: findUserSchema })], async (req, res, next) => {
+// disabled //   try {
+// disabled //     const users = await User.find()
+// disabled //     res.json(users)
+// disabled //   } catch (err) {
+// disabled //     next(err)
+// disabled //   }
+// disabled // })
+
+router.get('/me', auth.required, async (req, res, next) => {
   try {
-    const users = await User.find()
-    res.json(users)
-  } catch (err) {
-    next(err)
+    const user = await User.findById(req.payload.id)
+    if (!user) {
+      res.status(401).json({ error: {message: 'Unauthorized'}})
+    }
+    return res.json(user)
+  } catch (e) {
+    next(e)
   }
 })
 
